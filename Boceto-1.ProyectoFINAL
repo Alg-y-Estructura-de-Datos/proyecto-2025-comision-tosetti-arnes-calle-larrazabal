@@ -1,1 +1,51 @@
+#include <iostream>
+#include "CSVReader.h"
+#include "Venta.h"
+#include "procesarEstadisticas.cpp" // Esto se crea luego y tendrá todo lo del punto 5
+
+using namespace std;
+
+int main() {
+    cout << "Cargando archivo de ventas...\n";
+
+    Lista<Venta> ventas = leerVentasCSV("ventas_sudamerica.csv");
+
+    // Acá se procesarán las estadísticas principales
+ ;
+
+    // Menú principal
+    int opcion;
+    do {
+        cout << "\nMENÚ PRINCIPAL\n";
+        cout << "1. Ver estadísticas procesadas\n";
+        cout << "2. Agregar venta\n";
+        cout << "3. Eliminar venta\n";
+        cout << "4. Modificar venta\n";
+        cout << "5. Consultas dinámicas\n";
+        cout << "0. Salir\n";
+        cout << "Seleccione una opción: ";
+        cin >> opcion;
+
+        switch (opcion) {
+            case 1:
+                // mostrarEstadisticas();
+                break;
+            case 2:
+                // agregarVenta();
+                break;
+            case 3:
+                // eliminarVenta();
+                break;
+            case 4:
+                // modificarVenta();
+                break;
+            case 5:
+                // menuConsultas();
+                break;
+        }
+    } while (opcion != 0);
+
+    cout << "¡Hasta luego!\n";
+    return 0;
+}
 
