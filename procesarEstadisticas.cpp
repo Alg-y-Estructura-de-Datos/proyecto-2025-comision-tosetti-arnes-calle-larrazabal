@@ -1,5 +1,4 @@
-// Archivo: procesarEstadisticas.cpp
-// Descripción: Este archivo contiene el procesamiento de estadísticas de ventas
+// Este archivo contiene el procesamiento de estadísticas de ventas
 // utilizando estructuras eficientes como HashMapList y Lista, con mínima cantidad de condicionales e impresión de tiempos.
 #include <iostream>
 #include <ctime>
@@ -7,7 +6,7 @@
 #include "Venta.h"
 #include "HashMapList.h"
 #include "Lista.h"
-
+#include "procesarEstadisticas.h"
 using namespace std;
 
 // Función para obtener clave combinada (por ejemplo: ciudad + país)
