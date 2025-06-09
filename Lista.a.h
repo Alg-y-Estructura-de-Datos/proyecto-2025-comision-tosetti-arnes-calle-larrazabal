@@ -1,61 +1,163 @@
-#ifndef LISTA_H
-#define LISTA_H
-
+#ifndef U02_LISTAS_LISTA_LISTA_H_
+#define U02_LISTAS_LISTA_LISTA_H_
 #include <iostream>
 
-template <typename T>
-struct Nodo {
-    T dato;
-    Nodo* siguiente = nullptr;
-};
+#include "nodo.h"
 
-template <typename T>
+template <class T>
 class Lista {
 private:
-    Nodo<T>* inicio;
+  Nodo<T>* inicio;
 
 public:
-    Lista() : inicio(nullptr) {}
-    ~Lista() { vaciar(); }
+  Lista();
+  Lista(const Lista<T>& li);
+  ~Lista();
 
-    void insertarUltimo(T dato) {
-        Nodo<T>* nuevo = new Nodo<T>{dato};
-        if (!inicio) {
-            inicio = nuevo;
-        } else {
-            Nodo<T>* aux = inicio;
-            while (aux->siguiente)
-                aux = aux->siguiente;
-            aux->siguiente = nuevo;
-        }
-    }
+  bool esVacia();
+  int getTamanio() const;
+  void insertar(int pos, T dato);
+  void insertarPrimero(T dato);
+  void insertarUltimo(T dato);
+  void remover(int pos);
+  T getDato(int pos) const;
+  void reemplazar(int pos, T dato);
+  void vaciar();
+  void print();
 
-    T getDato(int pos) const {
-        Nodo<T>* aux = inicio;
-        for (int i = 0; i < pos && aux; i++) {
-            aux = aux->siguiente;
-        }
-        if (!aux) throw 404;
-        return aux->dato;
-    }
-
-    int getTamanio() const {
-        Nodo<T>* aux = inicio;
-        int tam = 0;
-        while (aux) {
-            tam++;
-            aux = aux->siguiente;
-        }
-        return tam;
-    }
-
-    void vaciar() {
-        while (inicio) {
-            Nodo<T>* borrar = inicio;
-            inicio = inicio->siguiente;
-            delete borrar;
-        }
-    }
+  Nodo<T>* getInicio() const; // Función agregada para permitir recorrer desde HashMapList
 };
 
-#endif
+// Implementaciones
+
+template <class T> Lista<T>::Lista() { inicio = nullptr; }
+template <class T> Lista<T>::Lista(const Lista<T>& li) { inicio = li.inicio; }
+template <class T> Lista<T>::~Lista() { vaciar(); }
+
+template <class T> bool Lista<T>::esVacia() { return inicio == nullptr; }
+
+template <class T> int Lista<T>::getTamanio() const {
+  Nodo<T>* aux = inicio;
+  int size = 0;
+  while (aux != nullptr) {
+    aux = aux->getSiguiente();
+    size++;
+  }
+  return size;
+}
+
+template <class T> void Lista<T>::insertar(int pos, T dato) {
+  int posActual = 0;
+  Nodo<T>* aux = inicio, *nuevo = new Nodo<T>;
+  nuevo->setDato(dato);
+
+  if (pos == 0) {
+    nuevo->setSiguiente(inicio);
+    inicio = nuevo;
+    return;
+  }
+
+  while (aux != nullptr && posActual < pos - 1) {
+    aux = aux->getSiguiente();
+    posActual++;
+  }
+
+  if (aux == nullptr) throw 404;
+
+  nuevo->setSiguiente(aux->getSiguiente());
+  aux->setSiguiente(nuevo);
+}
+
+template <class T> void Lista<T>::insertarPrimero(T dato) { insertar(0, dato); }
+
+template <class T> void Lista<T>::insertarUltimo(T dato) {
+  Nodo<T>* aux = inicio, *nuevo = new Nodo<T>;
+  nuevo->setDato(dato);
+
+  if (aux == nullptr) {
+    nuevo->setSiguiente(nullptr);
+    inicio = nuevo;
+    return;
+  }
+
+  while (aux->getSiguiente() != nullptr) {
+    aux = aux->getSiguiente();
+  }
+
+  nuevo->setSiguiente(nullptr);
+  aux->setSiguiente(nuevo);
+}
+
+template <class T> void Lista<T>::remover(int pos) {
+  Nodo<T>* aux = inicio, *aBorrar;
+  int posActual = 0;
+
+  if (pos == 0) {
+    inicio = inicio->getSiguiente();
+    delete aux;
+    return;
+  }
+
+  while (aux != nullptr && posActual < pos - 1) {
+    aux = aux->getSiguiente();
+    posActual++;
+  }
+
+  if (aux == nullptr) throw 404;
+
+  aBorrar = aux->getSiguiente();
+  aux->setSiguiente(aBorrar->getSiguiente());
+  delete aBorrar;
+}
+
+template <class T> T Lista<T>::getDato(int pos) const {
+  Nodo<T>* aux = inicio;
+  int posActual = 0;
+
+  while (aux != nullptr && posActual < pos) {
+    aux = aux->getSiguiente();
+    posActual++;
+  }
+
+  if (aux == nullptr) throw 404;
+  return aux->getDato();
+}
+
+template <class T> void Lista<T>::reemplazar(int pos, T dato) {
+  Nodo<T>* aux = inicio;
+  int posActual = 0;
+
+  while (aux != nullptr && posActual < pos) {
+    aux = aux->getSiguiente();
+    posActual++;
+  }
+
+  if (aux == nullptr) throw 404;
+  aux->setDato(dato);
+}
+
+template <class T> void Lista<T>::vaciar() {
+  Nodo<T>* aux = inicio, *aBorrar;
+  while (aux != nullptr) {
+    aBorrar = aux;
+    aux = aux->getSiguiente();
+    delete aBorrar;
+  }
+  inicio = nullptr;
+}
+
+template <class T> void Lista<T>::print() {
+  Nodo<T>* aux = inicio;
+  while (aux != nullptr) {
+    std::cout << aux->getDato() << "->";
+    aux = aux->getSiguiente();
+  }
+  std::cout << "NULL" << std::endl;
+}
+
+template <class T> Nodo<T>* Lista<T>::getInicio() const {
+  return inicio;
+}
+
+#endif // U02_LISTAS_LISTA_LISTA_H_
+
