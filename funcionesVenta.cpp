@@ -1,12 +1,11 @@
 
-// Archivo: funcionesVenta.cpp
 // Funciones para agregar, eliminar y modificar ventas con pila para deshacer
 #include <iostream>
 #include <string>
 #include "Venta.h"
 #include "Lista.h"
 #include "Pila.h"
-
+#include "funcionesVenta.h"
 using namespace std;
 
 // Pila global para deshacer eliminaciones (última venta eliminada)
